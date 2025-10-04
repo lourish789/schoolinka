@@ -16,6 +16,7 @@ from typing import List, Dict, Optional, Tuple
 import sys
 import pysqlite3
 import gspread
+from google.oauth2 import service_account
 from google.oauth2.service_account import Credentials
 from tqdm import tqdm
 
