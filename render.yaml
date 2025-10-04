@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ai-coach-bot
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 4 -b 0.0.0.0:$PORT --timeout 120 ai_coach_bot:app
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: GREEN_API_ID_INSTANCE
+        sync: false
+      - key: GREEN_API_TOKEN
+        sync: false
+      - key: SPREADSHEET_ID
+        sync: false
+      - key: PORT
+        value: 5000
+    autoDeploy: true
