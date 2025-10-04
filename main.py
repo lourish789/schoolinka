@@ -19,6 +19,8 @@ import gspread
 from google.oauth2 import service_account
 from google.oauth2.service_account import Credentials
 from tqdm import tqdm
+import json
+
 
 # Fix SQLite and apply async patch
 sys.modules["sqlite3"] = pysqlite3
@@ -53,8 +55,39 @@ if not all([CONFIG['PINECONE_API_KEY'], CONFIG['GOOGLE_API_KEY'],
 
 # Initialize Google Sheets
 try:
-    gc = gspread.service_account(filename="credentials.json")
-    sh = gc.open_by_key(CONFIG['SPREADSHEET_ID'])
+    #gc = gspread.service_account(filename="credentials.json")
+    #sh = gc.open_by_key(CONFIG['SPREADSHEET_ID'])
+
+    
+# Get the JSON string from the environment variable
+    credential_json = os.getenv('GOOGLE_CREDS_JSON')
+    if not credential_json:
+        raise ValueError("Google credentials not found in environment variables")
+
+# Parse the JSON and create credentials
+    credential_info = json.loads(credential_json)
+
+# Define the required scopes
+    scopes = [
+        'https://www.googleapis.com/auth/spreadsheets',
+        'https://www.googleapis.com/auth/drive'
+    ]
+    credentials = service_account.Credentials.from_service_account_info(credential_info, scopes=scopes)
+
+# Authorize with gspread
+    gc = gspread.authorize(credentials)
+    # Assuming you have already authorized and opened your spreadsheet
+    sh = gc.open("Your Spreadsheet Name")
+
+# Add a new worksheet
+    users_sheet = sh.add_worksheet(title="Users", rows="100", cols="10")
+    users_sheet.append_row(["Timestamp", "Chat ID", "Name", "Email", "Phone", "Location", "Class", "Status"])
+    conversations_sheet = sh.add_worksheet(title="Conversations", rows="10000", cols="6")
+    conversations_sheet.append_row(["Timestamp", "Chat ID", "User Name", "User Message", "Bot Response", "Intent"])
+    
+    
+
+# The rest of your code to open and update the sheet remains the same
 
     #credential_json = os.getenv('credentials.json')
     #if not credential_json:
