@@ -71,13 +71,13 @@ try:
     
     # Get or create worksheets
     try:
-        users_sheet = sh.worksheet("Users")
+        users_sheet = sh.worksheet1#("Users")
     except:
         users_sheet = sh.add_worksheet(title="Users", rows="1000", cols="10")
         users_sheet.append_row(["Timestamp", "Chat ID", "Name", "Email", "Phone", "Location", "Class", "Status"])
     
     try:
-        conversations_sheet = sh.worksheet("Conversations")
+        conversations_sheet = sh.worksheet2#("Conversations")
     except:
         conversations_sheet = sh.add_worksheet(title="Conversations", rows="10000", cols="6")
         conversations_sheet.append_row(["Timestamp", "Chat ID", "User Name", "User Message", "Bot Response", "Intent"])
