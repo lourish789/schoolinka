@@ -52,21 +52,21 @@ if not all([CONFIG['PINECONE_API_KEY'], CONFIG['GOOGLE_API_KEY'],
 
 # Initialize Google Sheets
 try:
-    #gc = gspread.service_account(filename="credentials.json")
-    #sh = gc.open_by_key(CONFIG['SPREADSHEET_ID'])
+    gc = gspread.service_account(filename="credentials.json")
+    sh = gc.open_by_key(CONFIG['SPREADSHEET_ID'])
 
-    credential_json = os.getenv('credentials.json')
-    if not credential_json:
-        raise ValueError("No credentials found in environment variable")
+    #credential_json = os.getenv('credentials.json')
+    #if not credential_json:
+        #raise ValueError("No credentials found in environment variable")
 
     # Parse the JSON string and create credentials
-    credential_info = json.loads(credential_json)
-    credentials = service_account.Credentials.from_service_account_info(
-        credential_info,
-        scopes=['https://www.googleapis.com/auth/spreadsheets']
+    #credential_info = json.loads(credential_json)
+    #credentials = service_account.Credentials.from_service_account_info(
+      #  credential_info,
+      #  scopes=['https://www.googleapis.com/auth/spreadsheets']
 )
     # Authorize gspread
-    gc = gspread.authorize(credentials)
+    #gc = gspread.authorize(credentials)
     
     # Get or create worksheets
     try:
